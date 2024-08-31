@@ -3,31 +3,20 @@ policies:
     resource: azure.vm
     description: |
       Esta política identifica máquinas virtuales en Azure que no tienen habilitada la autenticación multifactor (MFA).
+      Se ha detectado una máquina virtual sin autenticación multifactor (MFA). 
+      Para remediar este hallazgo, sigue los pasos en el benchmark oficial de CIS:
+      
+      **Remediación:**
+      1. Asigna una identidad administrada a la VM.
+      2. Asegura que las credenciales de acceso a la VM tengan habilitado MFA.
+
+      **Referencias:**
+      [CIS Azure Benchmark - Configuración de MFA](https://learn.microsoft.com/en-us/azure/active-directory/authentication/howto-mfa-getstarted)
     filters:
       - type: value
         key: "identity.type"
-        op: eq
         value: "SystemAssigned"
       - type: value
         key: "identity.userAssignedIdentities"
         value_type: size
-        op: eq
-        value: 0
-    actions:
-      - type: notify
-        to:
-          - "alejandro.romero@managementitconsulting.com"
-        subject: "VM sin MFA detectada en Azure"
-        template: default
-    message:
-          text: |
-            Se ha detectado una máquina virtual sin autenticación multifactor (MFA). 
-            Para remediar este hallazgo, sigue los pasos en el benchmark oficial de CIS:
-            
-            **Remediación:**
-            1. Asigna una identidad administrada a la VM.
-            2. Asegura que las credenciales de acceso a la VM tengan habilitado MFA.
-
-            **Referencias:**
-            [CIS Azure Benchmark - Configuración de MFA](https://learn.microsoft.com/en-us/azure/active-directory/authentication/howto-mfa-getstarted)
-          format: markdown
+        value: "Off"
