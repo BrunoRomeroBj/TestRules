@@ -1,0 +1,13 @@
+policies:
+  - name: restrict-public-ip-ec2
+    resource: ec2
+    filters:
+      - type: network-location
+        value: public
+    actions:
+      - type: stop
+      - type: notify
+        to:
+          - arn:aws:sns:<region>:<account-id>:<sns-topic-name>
+        transport:
+          type: sns
