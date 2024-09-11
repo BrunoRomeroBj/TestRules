@@ -1,0 +1,14 @@
+policies:
+  - name: stop-unused-vms
+    description: |
+      Stops virtual machines that have been running for more than 24 hours without activity.
+    resource: gcp.instance  # The policy applies to Google Cloud virtual machine instances.
+    filters:
+      - type: value
+        key: status
+        value: RUNNING  # The filter ensures only VMs that are currently running are targeted.
+      - type: instance-age
+        op: greater-than
+        value: 24  # The filter selects instances that have been running for more than 24 hours.
+    actions:
+      - type: stop  # The action stops the selected virtual machines.
