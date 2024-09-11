@@ -1,0 +1,18 @@
+policies:
+  - name: gcp-restrict-public-ip-vms
+    description: |
+      Prevent VM instances from having public IP addresses.
+    resource: gcp.instance
+    filters:
+      - type: network
+        key: networkInterfaces[].accessConfigs[]
+        value: present
+    actions:
+      - type: stop
+      - type: notify
+        to:
+          - admin@yourdomain.com
+        format: json
+        transport:
+          type: pubsub
+          topic: projects/<project-name>/topics/<topic-name>
