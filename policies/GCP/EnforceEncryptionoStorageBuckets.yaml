@@ -1,0 +1,12 @@
+policies:
+  - name: gcp-enforce-bucket-encryption
+    description: |
+      Ensure that all GCP storage buckets have encryption enabled.
+    resource: gcp.bucket
+    filters:
+      - type: value
+        key: encryption.defaultKmsKeyName
+        value: absent
+    actions:
+      - type: set-encryption
+        kms-key-name: projects/<project-name>/locations/<location>/keyRings/<keyring>/cryptoKeys/<key>
